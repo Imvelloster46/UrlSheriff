@@ -82,7 +82,7 @@ def verificar_portas_abertas(url):
             txt.insert(INSERT, f'Erro ao verificar a porta {porta}: {ex}\n')
 
 # Função para limpar os resultados na área de texto
-def limpar_resultados():
+def impar_resultados():
     txt.delete('1.0', END)
 
 
