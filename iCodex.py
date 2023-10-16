@@ -106,7 +106,7 @@ btn_executar = Button(janela, text='Executar', command=executar_varredura)
 btn_executar.grid(row=0, column=2, padx=10, pady=10)
 
 # Cria um botão para limpar os resultados
-btn_limpar = Button(janela, text='Limpar Resultados', command=limpar_resultados)
+btn_limpar = Button(janela, text='Limpar Resultados', command=impar_resultados)
 btn_limpar.grid(row=0, column=3, padx=10, pady=10)
 
 # Cria uma área de texto para exibir os resultados
