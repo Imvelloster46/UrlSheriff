@@ -61,7 +61,7 @@ def executar_varredura():
 
 def salvarArq_salvar():
     conteudo = txt.get("1.0", "end-1c")
-    filename: str = asksaveasfilename(defaultextension=".txt")
+    filename = asksaveasfilename(defaultextension=".txt")
     if filename:
         with open(filename, 'w') as f:
             f.write(conteudo)
