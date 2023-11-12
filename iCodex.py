@@ -1,7 +1,8 @@
 import socket
 from tkinter import *
-from tkinter import scrolledtext
+from tkinter import scrolledtext, Button
 from urllib.parse import urljoin, urlparse
+from tkinter.filedialog import asksaveasfilename
 
 import requests
 from bs4 import BeautifulSoup
@@ -15,6 +16,9 @@ def executar_varredura():
     # Obtém a URL inserida pelo usuário
     url = entry.get()
 
+    # Adiciona o prefixo "https://" se não estiver presente
+    if not url.startswith("https://") and not url.startswith("http://"):
+        url = "https://" + url
     try:
         # Faz uma requisição GET para a URL
         resposta_http = requests.get(url)
@@ -55,6 +59,19 @@ def executar_varredura():
     except requests.exceptions.RequestException as e:
         txt.insert(INSERT, f'Erro ao acessar a URL: {e}\n')
 
+def salvarArq_salvar():
+    conteudo = txt.get("1.0", "end-1c")
+    filename: str = asksaveasfilename(defaultextension=".txt")
+    if filename:
+        with open(filename, 'w') as f:
+            f.write(conteudo)
+
+# Função chamada quando uma tecla é pressionada na entrada de URL
+def adicionar_https(event):
+    url = entry.get()
+    if not url.startswith("https://") and not url.startswith("http://"):
+        entry.insert(0, "https://")
+
 
 def verificar_portas_abertas(url):
     # Obtem o nome do host a partir da URL
@@ -85,16 +102,16 @@ def verificar_portas_abertas(url):
 def impar_resultados():
     txt.delete('1.0', END)
 
-
 # Cria a janela principal
 janela = Tk()
+conteudo = Text(janela)
 
 # Configura a janela
 janela.title('Ferramenta de Varredura de Sites')
 janela.geometry('800x600')
 
 # Cria um rótulo para a entrada da URL
-lbl1 = Label(janela, text='Insira a URL do site a ser verificado:')
+lbl1 = Label(janela, text= 'Insira a URL do site a ser verificado:')
 lbl1.grid(row=0, column=0, padx=10, pady=10)
 
 # Cria uma entrada para a URL do site
@@ -105,13 +122,16 @@ entry.grid(row=0, column=1, padx=10, pady=10)
 btn_executar = Button(janela, text='Executar', command=executar_varredura)
 btn_executar.grid(row=0, column=2, padx=10, pady=10)
 
+btn_salvarArq: Button = Button(janela, text='Salvar Arquivc', command=salvarArq_salvar)
+btn_salvarArq.grid(row=0, column=3, padx=12, pady=10)
+
 # Cria um botão para limpar os resultados
 btn_limpar = Button(janela, text='Limpar Resultados', command=impar_resultados)
-btn_limpar.grid(row=0, column=3, padx=10, pady=10)
+btn_limpar.grid(row=0, column=4, padx=10, pady=10)
 
 # Cria uma área de texto para exibir os resultados
 txt = scrolledtext.ScrolledText(janela, wrap=WORD)
-txt.grid(row=1, column=0, columnspan=4, padx=10, pady=10)
+txt.grid(row=1, column=0, columnspan=5, padx=10, pady=10)
 
 # Loop principal da janela
 janela.mainloop()
